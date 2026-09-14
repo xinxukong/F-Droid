@@ -1,17 +1,12 @@
-# 我的F-Droid仓库 📦
+# 我的F-Droid仓库
 
-> 这里存放着我个人的 Android 应用分享。
+欢迎来到我的个人应用分享仓库！
 
-## 📊 访问量统计
-<!-- 下面这行是访问量统计徽标，把 your-github-username 换成你的GitHub用户名 -->
-[![Visitor Count](https://git-hub.com/your-github-username/profile/badge.svg)](https://git-hub.com/your-github-username/profile)
+这里主要存放我自用或分享的 Android 应用。
 
-## 📱 如何使用
-1. 安装 [F-Droid](https://f-droid.org/)
-2. 添加仓库地址：`https://你的用户名.github.io/你的仓库名/repo`
-3. 刷新仓库，开始下载！
+## 仓库说明
+- 📱 提供日常实用的 APK 下载
+- 🔄 通过 F-Droid 客户端自动更新
+- ☁️ 由 GitHub Actions 自动构建
 
-## 🛠️ 技术栈
-![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-blue?logo=github)
-![F-Droid](https://img.shields.io/badge/F--Droid-1976D2?logo=f-droid)
 
