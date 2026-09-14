@@ -16,14 +16,10 @@
 
 > 如果需要指纹方式，可后续在客户端查看本仓库指纹后分享给同事。
 
-
 ## 🌸 访问量（Moe-Counter）
 ![Moe-Counter](https://count.getloli.com/get/@xinxukong-fdroid?capoo)
 
-想换风格把上面 `theme=asoul` 改成下面任意一个：
-`moebooru` `3d-num` `ai-1` `booru-ffsr` `asoul` `random`
-
 ## ⚠️ 说明
-本仓库仅供个人/小范围分发；APK 请使用已签名的 release 包。
+本仓库仅供个人/小范围分发；APK使用已签名的release包。
 
 
