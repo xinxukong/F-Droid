@@ -54,7 +54,7 @@ Description: |-
   Kazumi 是使用 Flutter 开发的番剧采集/在线观看程序。
 AutoUpdateMode: None
 UpdateCheckMode: None
-YML
+
 
       - name: 更新F-Droid索引
         run: |
