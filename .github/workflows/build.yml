@@ -1,0 +1,80 @@
+name: 构建F-Droid仓库
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载代码
+        uses: actions/checkout@v4
+
+      - name: 安装fdroidserver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fdroidserver
+
+      - name: 确保签名密钥存在
+        run: |
+          if [ ! -f keystore.p12 ]; then
+            keytool -genkeypair -keystore keystore.p12 -storetype PKCS12 -storepass fdroid123 -alias fdroid -keypass fdroid123 -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=github.io, O=Personal, C=CN"
+          fi
+
+      - name: 从Kazumi官方Release拉取最新APK
+        run: |
+          mkdir -p repo
+          TAG=$(curl -s https://api.github.com/repos/Predidit/Kazumi/releases/latest | grep -o '"tag_name": "[^"]*' | cut -d'"' -f4)
+          echo "最新版本: $TAG"
+          ASSET="Kazumi_android_${TAG}.apk"
+          echo "下载: $ASSET"
+          curl -L -o "repo/$ASSET" "https://github.com/Predidit/Kazumi/releases/download/${TAG}/${ASSET}" || true
+          ls -la repo/
+
+      - name: 生成Kazumi元数据
+        run: |
+          mkdir -p metadata
+          cat > metadata/com.predidit.kazumi.yml <<'YML'
+Categories:
+  - Multimedia
+  - Internet
+License: GPL-3.0-only
+AuthorName: Predidit
+WebSite: https://kazumi.app
+SourceCode: https://github.com/Predidit/Kazumi
+Summary: 基于自定义规则的番剧采集与在线观看
+Description: |-
+  Kazumi 是使用 Flutter 开发的番剧采集/在线观看程序。
+AutoUpdateMode: None
+UpdateCheckMode: None
+YML
+
+      - name: 更新F-Droid索引
+        run: |
+          fdroid update --create-metadata
+
+      - name: 保存密钥
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@bot.com"
+          git add keystore.p12 || true
+          git commit -m "save keystore" || true
+          git push || true
+
+      - name: 开启Pages
+        uses: actions/configure-pages@v4
+
+      - name: 上传到Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'repo'
+
+      - name: 部署Pages
+        uses: actions/deploy-pages@v4
