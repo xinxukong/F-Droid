@@ -9,6 +9,6 @@
 - 🔄 通过 F-Droid 客户端自动更新
 - ☁️ 由 GitHub Actions 自动构建
 
-![Moe-Counter](https://count.getloli.com/get/xinxukong.github.io?theme=default)
+![Moe-Counter](https://count.getloli.com/get/xinxukong.github.io?theme=capoo)
 
 
