@@ -16,14 +16,9 @@
 
 > 如果需要指纹方式，可后续在客户端查看本仓库指纹后分享给同事。
 
-## 🗂 目录说明
-- `repo/`：放 APK 文件，系统自动建索引
-- `metadata/`：应用描述（首次构建后自动生成）
-- `config.yml`：仓库名称、网址、签名配置
-- `.github/workflows/build.yml`：自动构建部署脚本
 
 ## 🌸 访问量（Moe-Counter）
-![Moe-Counter](https://count.getloli.com/get/@xinxukong-fdroid?theme=asoul)
+![Moe-Counter](https://count.getloli.com/get/@xinxukong-fdroid?capoo)
 
 想换风格把上面 `theme=asoul` 改成下面任意一个：
 `moebooru` `3d-num` `ai-1` `booru-ffsr` `asoul` `random`
