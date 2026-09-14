@@ -1,0 +1,8 @@
+repo_name: 我的F-Droid仓库
+repo_description: 个人应用分享
+repo_url: https://xinxukong.github.io/F-Droid
+keystore: keystore.p12
+keystorepass: 12345678
+keyalias: fdroid
+keypass: 12345678
+keydname: CN=github.io, O=Personal, C=CN
