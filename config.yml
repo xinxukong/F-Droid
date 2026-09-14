@@ -1,8 +1,0 @@
-repo_name: "xinxukong的F-Droid仓库"
-repo_url: "https://xinxukong.github.io/fdroid-repo"
-repo_id: "com.xinxukong.fdroid"
-keydname: "CN=xinxukong.github.io, O=Personal, C=CN"
-keystore: "keystore.jks"
-keystorepass: "fdroid123"
-keyalias: "key0"
-keypass: "fdroid123"
