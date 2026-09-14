@@ -1,0 +1,99 @@
+name: 同步Kazumi到F-Droid
+
+on:
+  schedule:
+    - cron: "17 4 * * *"   # 每天UTC4点17分检查，可自行改
+  workflow_dispatch:        # 允许手动点Run
+  push:
+    paths:
+      - ".github/workflows/sync-kazumi.yml"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载本仓库
+        uses: actions/checkout@v4
+
+      - name: 安装fdroidserver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fdroidserver
+
+      - name: 确保keystore存在
+        run: |
+          if [ ! -f keystore.p12 ]; then
+            keytool -genkeypair -keystore keystore.p12 -storetype PKCS12 -storepass fdroid123 -alias fdroid -keypass fdroid123 -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=github.io, O=Personal, C=CN"
+          fi
+
+      - name: 取Kazumi最新Release并下载APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 取最新非预发布版本号
+          TAG=$(gh release list --repo Predidit/Kazumi --limit 50 \
+                | awk '$2=="Latest"{print $1}' \
+                | head -n1)
+          if [ -z "$TAG" ]; then
+            TAG=$(gh api repos/Predidit/Kazumi/releases \
+                  --jq '.[].tag_name' | head -n1)
+          fi
+          echo "最新Kazumi标签: $TAG"
+          ASSET="Kazumi_android_${TAG}.apk"
+          echo "目标文件: $ASSET"
+          gh release download "$TAG" --repo Predidit/Kazumi --pattern "$ASSET" --dir /tmp/kazumi || true
+          mkdir -p repo
+          if [ -f "/tmp/kazumi/$ASSET" ]; then
+            cp "/tmp/kazumi/$ASSET" "repo/$ASSET"
+            echo "已下载到 repo/$ASSET"
+          else
+            echo "未找到 $ASSET，可能该版本未发android单包，工作流跳过更新"
+          fi
+
+      - name: 写Kazumi元数据
+        run: |
+          mkdir -p metadata
+          cat > metadata/com.predidit.kazumi.yml <<'YML'
+Categories:
+  - Multimedia
+  - Internet
+License: GPL-3.0-only
+AuthorName: Predidit
+WebSite: https://kazumi.app
+SourceCode: https://github.com/Predidit/Kazumi
+IssueTracker: https://github.com/Predidit/Kazumi/issues
+Changelog: https://github.com/Predidit/Kazumi/releases
+Summary: 基于自定义规则的番剧采集与在线观看
+Description: |-
+  Kazumi 是使用 Flutter 开发的番剧采集/在线观看程序，支持自定义规则、弹幕等功能。
+AutoUpdateMode: None
+UpdateCheckMode: None
+YML
+
+      - name: 更新F-Droid索引
+        run: |
+          fdroid update --create-metadata
+
+      - name: 提交keystore（如首次生成）
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@bot.com"
+          git add keystore.p12 || true
+          git commit -m "chore: save fdroid keystore" || true
+          git push || true
+
+      - name: 开启Pages
+        uses: actions/configure-pages@v4
+
+      - name: 上传repo到Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'repo'
+
+      - name: 部署Pages
+        uses: actions/deploy-pages@v4
