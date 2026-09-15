@@ -1,6 +1,6 @@
 repo_url: https://xinxukong.github.io/F-Droid/fdroid/repo
-repo_name: XinxuKong F-Droid
-repo_description: 个人 F-Droid 仓库，自动同步 Kazumi 等应用。
+repo_name: xinxuxlkong的个人F-Droid仓库
+repo_description: xinxukong的个人F-Droid仓库，自动同步Kazumi等应用。
 archive_older: 0
 keystore: keystore.p12
 repo_keyalias: xinxukong
