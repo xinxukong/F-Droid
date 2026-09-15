@@ -12,5 +12,5 @@ Description: |
 
 # 这里我们用 GitHub Releases 里的 APK 下载链接
 # 注意：%v 代表版本号，F-Droid 会自动替换
-Binaries: https://github.com/Predidit/Kazumi/releases/download/v%v/Kazumi_android_2.3.1.apk
+Binaries: https://github.com/Predidit/Kazumi/releases/download/%v/Kazumi_android_%v.apk
 # 如果上面这个链接不行，你可以去 Kazumi 的 Releases 页面看一下最新版的 APK 具体叫什么名字，然后替换进来。
