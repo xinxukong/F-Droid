@@ -1,0 +1,11 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+WebSite: https://github.com/Predidit/Kazumi
+SourceCode: https://github.com/Predidit/Kazumi
+IssueTracker: https://github.com/Predidit/Kazumi/issues
+AutoName: Kazumi
+Summary: 基于自定义规则的番剧采集与在线观看应用
+Description: |
+  Kazumi 是一个基于自定义规则的番剧采集与在线观看应用。
+  支持多平台，界面简洁，使用方便。
