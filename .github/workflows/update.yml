@@ -39,9 +39,11 @@ jobs:
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > fdroid/keystore.p12
 
       - name: Update repo index
+        env:
+          FDROID_KEYSTORE_PASS: ${{ secrets.KEYPASS }}
         run: |
           cd fdroid
-          fdroid update --keystorepass "${{ secrets.KEYPASS }}"
+          fdroid update
 
       - name: Commit and push changes
         run: |
