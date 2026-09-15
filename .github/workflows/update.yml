@@ -29,6 +29,12 @@ jobs:
       - name: Install fdroidserver
         run: pip install fdroidserver
 
+      # 新增：检查 Secrets 是否为空，避免报错看不懂
+      - name: Check secrets
+        run: |
+          if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then echo "❌ KEYSTORE_BASE64 没有设置！"; exit 1; fi
+          if [ -z "${{ secrets.KEYPASS }}" ]; then echo "❌ KEYPASS 没有设置！"; exit 1; fi
+
       - name: Prepare directories
         run: |
           mkdir -p fdroid/repo
@@ -41,7 +47,7 @@ jobs:
       - name: Update repo index
         run: |
           cd fdroid
-          # 自动生成完美的 config.yml 文件
+          # 生成 config.yml，密码加上单引号防止特殊字符破坏文件
           cat <<EOF > config.yml
           repo_url: https://xinxukong.github.io/F-Droid/fdroid/repo
           repo_name: XinxuKong F-Droid
@@ -50,8 +56,8 @@ jobs:
           keystore: keystore.p12
           repo_keyalias: xinxukong
           keydname: CN=xinxukong, OU=fdroid, O=xinxukong, L=Unknown, ST=Unknown, C=CN
-          keystorepass: ${{ secrets.KEYPASS }}
-          keypass: ${{ secrets.KEYPASS }}
+          keystorepass: '${{ secrets.KEYPASS }}'
+          keypass: '${{ secrets.KEYPASS }}'
           EOF
           # 运行 F-Droid 更新
           fdroid update
