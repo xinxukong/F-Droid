@@ -39,10 +39,12 @@ jobs:
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > fdroid/keystore.p12
 
       - name: Update repo index
-        env:
-          FDROID_KEYSTORE_PASS: ${{ secrets.KEYPASS }}
         run: |
           cd fdroid
+          # 将密码临时追加到 config.yml
+          echo "keystorepass: ${{ secrets.KEYPASS }}" >> config.yml
+          echo "keypass: ${{ secrets.KEYPASS }}" >> config.yml
+          # 运行 F-Droid 更新
           fdroid update
 
       - name: Commit and push changes
